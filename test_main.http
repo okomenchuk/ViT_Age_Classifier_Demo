@@ -1,0 +1,13 @@
+# Test FastAPI endpoints
+
+GET http://0.0.0.0:8000/
+Accept: application/json
+
+###
+
+# Test Streamlit UI
+
+GET http://0.0.0.0:8501
+Accept: application/json
+
+###

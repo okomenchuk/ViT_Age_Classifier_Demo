@@ -1,0 +1,29 @@
+# Specify the version of Docker Compose being used
+version: "3"
+
+# Define services (containers) to run as part of the application
+services:
+  # FastAPI service
+  fastapi:
+    build: src/app/   # Build the FastAPI service using the Dockerfile in the "src/app/" directory
+    ports:
+      - "8000:8000"   # Map port 8000 on the host to port 8000 in the container
+    networks:
+      - deploy_network # Connect the container to the "deploy_network" custom bridge network
+    container_name: fastapi # Assign the container the name "fastapi"
+
+  # Streamlit service
+  streamlit:
+    build: src/ui/    # Build the Streamlit service using the Dockerfile in the "src/ui/" directory
+    depends_on:
+      - fastapi        # Ensure that the Streamlit service starts only after the FastAPI service
+    ports:
+      - "8501:8501"   # Map port 8501 on the host to port 8501 in the container
+    networks:
+      - deploy_network # Connect the container to the "deploy_network" custom bridge network
+    container_name: streamlit # Assign the container the name "streamlit"
+
+# Define custom bridge networks for container communication
+networks:
+  deploy_network:
+    driver: bridge   # Use the "bridge" driver for the "deploy_network" custom network
